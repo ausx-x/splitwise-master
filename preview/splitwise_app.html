@@ -98,9 +98,26 @@
           <span class="hidden sm:inline">Receipt OCR</span>
         </button>
 
+        <button id="btnAddDirectBillTop" onclick="openDirectFriendExpenseModal()" class="px-3 py-2 rounded-xl text-xs font-semibold bg-[#FF652F]/10 hover:bg-[#FF652F]/20 text-[#FF652F] border border-[#FF652F]/30 flex items-center gap-1.5 transition" title="Add 1-on-1 Individual Bill Without Creating a Group">
+          <i data-lucide="user-plus" class="w-4 h-4"></i>
+          <span class="hidden md:inline">1-on-1 Bill</span>
+        </button>
+
         <button id="btnAddExpenseTop" onclick="openAddExpenseModal()" class="px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-[#1CC29F] hover:bg-[#159E81] text-white shadow-sm flex items-center gap-1.5 transition">
           <i data-lucide="plus" class="w-4 h-4"></i>
           <span>Add Expense</span>
+        </button>
+
+        <button id="btnOpenAuthModal" onclick="openAuthModal()" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center gap-2 transition" title="Switch Account, Login, Sign Up & Manage Personal Funds">
+          <span id="headerUserAvatar" class="w-7 h-7 rounded-lg bg-[#1CC29F] text-white font-extrabold text-xs flex items-center justify-center">AV</span>
+          <div class="text-left hidden sm:block leading-tight">
+            <div class="flex items-center gap-1">
+              <span id="headerUserName" class="text-xs font-bold text-slate-800 dark:text-slate-100">Anushka</span>
+              <span id="headerUserRoleBadge" class="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-600 dark:text-amber-400">👑 MASTER</span>
+            </div>
+            <div id="headerUserWalletText" class="text-[10px] font-semibold text-[#1CC29F] tabular-nums">Wallet: ₹85,000.00</div>
+          </div>
+          <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-slate-400"></i>
         </button>
 
         <button id="btnThemeToggle" onclick="toggleDarkMode()" aria-label="Toggle Dark Mode" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition">
@@ -170,8 +187,40 @@
         </button>
       </nav>
 
-      <!-- Architecture & Export Card -->
-      <div class="hidden lg:block bg-white dark:bg-[#1E1E1E] rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5">
+      <!-- Personal Wallet & Individual Funds Card -->
+      <div id="sidebarWalletCard" class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-slate-400">
+            <i data-lucide="wallet" class="w-3.5 h-3.5 text-[#1CC29F]"></i>
+            <span>My Individual Funds</span>
+          </div>
+          <span id="sidebarRolePill" class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400">👑 MASTER</span>
+        </div>
+        <div>
+          <div class="text-[11px] text-slate-500 dark:text-slate-400">Available Personal Wallet Balance</div>
+          <div id="sidebarWalletBalance" class="text-xl font-extrabold text-[#1CC29F] tabular-nums mt-0.5">₹85,000.00</div>
+          <div id="sidebarProjectedLiquidity" class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">Net after Splitwise debts: ₹105,613.33</div>
+        </div>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button id="btnSidebarAddFunds" onclick="openQuickWalletAdjust('credit')" class="py-1.5 px-2.5 rounded-xl bg-[#1CC29F]/15 hover:bg-[#1CC29F]/25 text-[#1CC29F] text-xs font-bold flex items-center justify-center gap-1 transition">
+            <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i><span>Add Funds</span>
+          </button>
+          <button id="btnSidebarWithdrawFunds" onclick="openQuickWalletAdjust('debit')" class="py-1.5 px-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-bold flex items-center justify-center gap-1 transition">
+            <i data-lucide="minus-circle" class="w-3.5 h-3.5"></i><span>Log Spend</span>
+          </button>
+        </div>
+        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+          <button id="btnSidebarDirectExpense" onclick="openDirectFriendExpenseModal()" class="flex-1 py-1.5 px-2.5 rounded-xl bg-[#FF652F]/10 hover:bg-[#FF652F]/20 text-[#FF652F] text-xs font-bold flex items-center justify-center gap-1 transition">
+            <i data-lucide="user-plus" class="w-3.5 h-3.5"></i><span>+ Direct 1-on-1 Bill</span>
+          </button>
+          <button id="btnSidebarSwitchUser" onclick="openAuthModal()" class="py-1.5 px-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold transition">
+            <span>Switch</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Architecture & Export Card (Master Account Only) -->
+      <div id="sidebarLedgerSpecsCard" class="hidden lg:block bg-white dark:bg-[#1E1E1E] rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5">
         <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-slate-400">
           <i data-lucide="cpu" class="w-3.5 h-3.5 text-[#1CC29F]"></i>
           <span>Ledger Engine Specs</span>
@@ -430,13 +479,34 @@
             <h2 class="text-xl font-bold tracking-tight">Friends &amp; Bilateral Ledgers</h2>
             <p class="text-xs text-slate-500 dark:text-slate-400">Net balances aggregated across all shared groups and direct 1-on-1 expenses</p>
           </div>
-          <button id="btnOpenAddFriend" onclick="openAddFriendModal()" class="px-3.5 py-2 rounded-xl bg-white dark:bg-[#1E1E1E] hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
-            <i data-lucide="user-plus" class="w-4 h-4 text-[#1CC29F]"></i>
-            <span>Add Friend</span>
-          </button>
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="btnFriendsDirectBill" onclick="openDirectFriendExpenseModal()" class="px-3.5 py-2 rounded-xl bg-[#1CC29F] hover:bg-[#159E81] text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
+              <i data-lucide="receipt" class="w-4 h-4"></i>
+              <span>+ Add 1-on-1 Bill (No Group)</span>
+            </button>
+            <button id="btnOpenAddFriend" onclick="openAddFriendModal()" class="px-3.5 py-2 rounded-xl bg-white dark:bg-[#1E1E1E] hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold flex items-center gap-1.5 shadow-sm transition">
+              <i data-lucide="user-plus" class="w-4 h-4 text-[#1CC29F]"></i>
+              <span>Add Friend</span>
+            </button>
+          </div>
         </div>
 
         <div id="friendsListContainer" class="space-y-3"></div>
+
+        <!-- Direct 1-on-1 & Individual Non-Group Ledger Feed -->
+        <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div>
+              <h3 class="text-base font-bold flex items-center gap-2">
+                <i data-lucide="users-round" class="w-4 h-4 text-[#FF652F]"></i>
+                <span>Direct 1-on-1 &amp; Non-Group Individual Bills</span>
+              </h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Expenses split directly with a friend or logged individually without creating a group</p>
+            </div>
+            <button id="btnAddDirectBillFeed" onclick="openDirectFriendExpenseModal()" class="px-3 py-1.5 rounded-xl bg-[#FF652F]/15 text-[#FF652F] hover:bg-[#FF652F]/25 text-xs font-bold transition">+ New Direct Bill</button>
+          </div>
+          <div id="directExpensesListContainer" class="space-y-2.5"></div>
+        </div>
       </section>
 
       <!-- TAB 3: ACTIVITY (EVENT-SOURCED AUDIT LOG) VIEW -->
@@ -474,7 +544,13 @@
                 <p id="accountUserEmailDisplay" class="text-xs text-slate-500">anushka@splitwise.dev • VPA: anushka@okaxis</p>
               </div>
             </div>
-            <div class="flex items-center gap-2">
+            <div class="flex flex-wrap items-center gap-2">
+              <span id="accountRoleBadge" class="text-xs font-extrabold uppercase px-2.5 py-1 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400">👑 Master Account</span>
+              <button id="btnAccountSwitchUser" onclick="openAuthModal('login')" class="px-3 py-2 rounded-xl bg-[#1CC29F] hover:bg-[#159E81] text-white text-xs font-semibold transition flex items-center gap-1.5">
+                <i data-lucide="log-in" class="w-3.5 h-3.5"></i>
+                <span>Switch / Login Account</span>
+              </button>
+              <button id="btnAccountCreateUser" onclick="openAuthModal('signup')" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold transition">+ Create Friend Account</button>
               <button id="btnResetDemoData" onclick="resetDemoDatabase()" class="px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-xs font-semibold transition">Reset Demo Ledger</button>
             </div>
           </div>
@@ -516,9 +592,81 @@
           </div>
         </div>
 
-        <!-- Export & Backup Subsystem -->
-        <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm">
-          <h3 class="text-sm font-bold mb-1">Asynchronous Export &amp; Ledger Backup</h3>
+        <!-- Individual Funds & Personal Wallet Management Card -->
+        <div id="accountWalletManagerCard" class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
+            <div>
+              <h3 class="text-base font-bold flex items-center gap-2">
+                <i data-lucide="wallet" class="w-4 h-4 text-[#1CC29F]"></i>
+                <span>Individual Funds &amp; Personal Wallet Management</span>
+              </h3>
+              <p class="text-xs text-slate-500">Each user manages their own personal funds, deposits, withdrawals, and automated settlement deductions</p>
+            </div>
+            <label class="inline-flex items-center gap-2 cursor-pointer select-none bg-slate-100 dark:bg-slate-800 px-3 py-1.5 rounded-xl text-xs font-semibold">
+              <input id="toggleAutoDeductWallet" type="checkbox" onchange="toggleAutoDeductWalletSetting(this.checked)" class="w-4 h-4 accent-[#1CC29F] rounded" checked />
+              <span>Auto-adjust Wallet on Settlements &amp; Self Bills</span>
+            </label>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="p-4 rounded-xl bg-[#1CC29F]/10 border border-[#1CC29F]/25">
+              <div class="text-xs text-slate-500 dark:text-slate-400">Available Wallet Funds</div>
+              <div id="accountWalletBalanceStat" class="text-2xl font-extrabold text-[#1CC29F] tabular-nums mt-1">₹85,000.00</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Personal cash / UPI bank balance</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+              <div class="text-xs text-slate-500 dark:text-slate-400">Net Splitwise Position</div>
+              <div id="accountNetLedgerStat" class="text-2xl font-extrabold tabular-nums mt-1">₹0.00</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Receivables minus payables</div>
+            </div>
+            <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800">
+              <div class="text-xs text-slate-500 dark:text-slate-400">Effective Net Worth / Liquidity</div>
+              <div id="accountEffectiveLiquidityStat" class="text-2xl font-extrabold text-slate-800 dark:text-slate-100 tabular-nums mt-1">₹85,000.00</div>
+              <div class="text-[11px] text-slate-400 mt-0.5">Wallet Funds + Net Splitwise Balance</div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Amount (<span id="walletCurrencyLabel">INR</span>)</label>
+              <input id="walletAdjustAmountInput" type="number" min="1" step="100" value="2500" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm font-bold tabular-nums" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Transaction Note / Source</label>
+              <input id="walletAdjustNoteInput" type="text" placeholder="e.g. Monthly Salary Credit / ATM Withdrawal" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sm" />
+            </div>
+            <div class="flex items-end gap-2">
+              <button id="btnWalletDeposit" type="button" onclick="adjustPersonalWallet('credit')" class="flex-1 py-2 px-3 rounded-xl bg-[#2ECC71] hover:bg-[#27ae60] text-white text-xs font-bold transition">+ Add Funds</button>
+              <button id="btnWalletWithdraw" type="button" onclick="adjustPersonalWallet('debit')" class="flex-1 py-2 px-3 rounded-xl bg-[#FF652F] hover:bg-[#e5531f] text-white text-xs font-bold transition">− Withdraw / Spend</button>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-slate-100 dark:border-slate-800">
+            <div class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">Personal Funds Activity Log</div>
+            <div id="walletHistoryList" class="space-y-1.5 max-h-40 overflow-y-auto custom-scroll text-xs"></div>
+          </div>
+        </div>
+
+        <!-- Member Mode Notice when logged in as a Standard Friend (Non-Master) -->
+        <div id="memberModeSimplifiedBanner" class="hidden bg-slate-100 dark:bg-slate-900 rounded-2xl p-4 border border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-9 h-9 rounded-xl bg-slate-200 dark:bg-slate-800 flex items-center justify-center text-slate-500">
+              <i data-lucide="shield-lock" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <div class="text-xs font-bold">Standard Friend Account View (Simplified UI)</div>
+              <p class="text-[11px] text-slate-500">Complicated admin tools (CSV/JSON Ledger Imports, Engine Specs &amp; Conflict Simulators) are hidden and reserved for the Master Account owner.</p>
+            </div>
+          </div>
+          <button id="btnUnlockMasterFromBanner" onclick="openAuthModal('login')" class="px-3 py-1.5 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400 text-xs font-bold">👑 Switch to Master Account</button>
+        </div>
+
+        <!-- Export & Backup Subsystem (Master Account Only) -->
+        <div id="accountMasterExportCard" class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-5 border border-amber-500/40 dark:border-amber-500/30 shadow-sm">
+          <div class="flex items-center justify-between mb-1">
+            <h3 class="text-sm font-bold">Asynchronous Export &amp; Ledger Backup</h3>
+            <span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-amber-500/20 text-amber-600 dark:text-amber-400">👑 Master Admin Exclusive</span>
+          </div>
           <p class="text-xs text-slate-500 mb-4">Download complete transaction history with paid/owed shares or import a JSON backup</p>
           <div class="flex flex-wrap items-center gap-3">
             <button id="btnAccountExportCsv" onclick="exportLedgerCSV()" class="px-4 py-2 rounded-xl bg-[#1CC29F] hover:bg-[#159E81] text-white text-xs font-semibold flex items-center gap-1.5 transition">
@@ -1203,6 +1351,114 @@
   </div>
 
   <!-- ===================================================================== -->
+  <!-- MODAL 11: ACCOUNT MANAGEMENT, LOGIN, SIGN-UP & MASTER PASSKEY GUARD   -->
+  <!-- ===================================================================== -->
+  <div id="authAccountModal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto">
+    <div class="bg-white dark:bg-[#1E1E1E] w-full max-w-2xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col">
+      <div class="px-5 py-4 bg-slate-900 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <i data-lucide="shield-check" class="w-5 h-5 text-[#1CC29F]"></i>
+          <div>
+            <h3 class="font-bold text-base">Account Management, Login &amp; Friend Registration</h3>
+            <p class="text-[11px] text-slate-400">Switch between friend accounts, log in with credentials, or create a new account with personal wallet funds</p>
+          </div>
+        </div>
+        <button id="btnCloseAuthModal" onclick="closeAuthModal()" class="p-1 rounded-lg hover:bg-white/10">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="px-5 pt-3 bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2">
+        <button id="authTabBtnLogin" type="button" onclick="switchAuthModalTab('login')" class="px-4 py-2 rounded-t-xl text-xs font-bold bg-white dark:bg-[#1E1E1E] text-[#1CC29F] border-t border-x border-slate-200 dark:border-slate-800">Switch Account / Log In</button>
+        <button id="authTabBtnSignup" type="button" onclick="switchAuthModalTab('signup')" class="px-4 py-2 rounded-t-xl text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200">+ Create New Account (Sign Up)</button>
+      </div>
+
+      <div class="p-5 overflow-y-auto custom-scroll space-y-4 flex-1">
+        <!-- LOGIN & QUICK SWITCH VIEW -->
+        <div id="authViewLogin" class="space-y-4">
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Active Accounts (1-Click Demo Switch or PIN Login)</span>
+              <span class="text-[11px] text-slate-400">Default Demo PIN: <strong class="font-mono text-slate-600 dark:text-slate-300">1234</strong></span>
+            </div>
+            <div id="authAccountsSwitchList" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+          </div>
+
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 space-y-3">
+            <div class="text-xs font-bold uppercase tracking-wider text-slate-400">Credential Login (Email + Password / PIN)</div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">Email Address</label>
+                <input id="loginEmailInput" type="email" placeholder="anushka@splitwise.dev" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold" />
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">Account PIN / Password</label>
+                <input id="loginPinInput" type="password" value="1234" placeholder="1234" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold" />
+              </div>
+            </div>
+            <div class="flex items-center justify-between pt-1">
+              <span id="loginErrorMsg" class="text-xs font-semibold text-red-500"></span>
+              <button id="btnSubmitLogin" type="button" onclick="handleCredentialLogin()" class="px-4 py-2 rounded-xl bg-[#1CC29F] hover:bg-[#159E81] text-white text-xs font-bold">Log In to Account</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- CREATE NEW ACCOUNT (SIGN UP) VIEW -->
+        <div id="authViewSignup" class="hidden space-y-4">
+          <div class="p-3.5 rounded-xl bg-[#1CC29F]/10 border border-[#1CC29F]/25 text-xs text-slate-700 dark:text-slate-200">
+            <strong>Friend Account Registration:</strong> Friends can create their own individual account, set their starting personal wallet funds, and immediately split group or direct 1-on-1 bills. Complicated engineering &amp; CSV tools remain hidden for standard friend accounts.
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Full Name *</label>
+              <input id="signupNameInput" type="text" placeholder="e.g. Devika Verma" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Email Address *</label>
+              <input id="signupEmailInput" type="email" placeholder="devika@gmail.com" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">UPI ID (VPA for Settlements)</label>
+              <input id="signupUpiInput" type="text" placeholder="devika@okicici" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Set Login PIN / Password *</label>
+              <input id="signupPinInput" type="password" value="1234" placeholder="4+ digit PIN or password" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-semibold" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Starting Personal Wallet Funds (INR)</label>
+              <input id="signupInitialFundsInput" type="number" step="500" value="25000" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold tabular-nums" />
+            </div>
+            <div>
+              <label class="block text-xs font-semibold text-slate-500 mb-1">Account Permission Tier</label>
+              <select id="signupRoleSelect" onchange="handleSignupRoleChange(this.value)" class="w-full px-3 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold">
+                <option value="MEMBER">👤 Friend / Member Account (Clean UI)</option>
+                <option value="MASTER">👑 Master Owner Account (Requires Owner Passkey)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Master Passkey Lock Box (Hidden unless MASTER role is selected) -->
+          <div id="signupMasterKeyContainer" class="hidden p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold text-amber-600 dark:text-amber-400">🔒 Master Account Creation Restricted to Owner</span>
+              <span class="text-[11px] font-mono text-slate-500">Owner Key: MASTER-2026</span>
+            </div>
+            <p class="text-[11px] text-slate-500">Only the application owner can create a Master Account with access to CSV/JSON imports and Ledger Engine Specs. Enter the Master Owner Passkey below:</p>
+            <input id="signupMasterKeyInput" type="password" placeholder="Enter Master Owner Passkey (MASTER-2026)" class="w-full px-3 py-2 rounded-xl bg-white dark:bg-slate-800 border border-amber-500/40 text-xs font-mono font-bold" />
+          </div>
+
+          <div class="flex items-center justify-between pt-2">
+            <span id="signupErrorMsg" class="text-xs font-semibold text-red-500"></span>
+            <button id="btnCreateAccountSubmit" type="button" onclick="createNewUserAccount()" class="px-5 py-2.5 rounded-xl bg-[#1CC29F] hover:bg-[#159E81] text-white text-xs font-bold shadow-sm">Create Account &amp; Sign In</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
   <!-- 5-SECOND UNDO TOAST / SNACKBAR                                        -->
   <!-- ===================================================================== -->
   <div id="toastContainer" class="fixed bottom-20 lg:bottom-6 right-4 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
@@ -1210,7 +1466,7 @@
     // =========================================================================
     // 1. CORE DATA STORE, FX ENGINE & SEED LEDGER (ACID DOUBLE-ENTRY MODEL)
     // =========================================================================
-    const STORAGE_KEY = 'splitwise_pro_ledger_v2';
+    const STORAGE_KEY = 'splitwise_pro_ledger_v3';
 
     // Exchange rates relative to 1 INR
     const FX_RATES_FROM_INR = {
@@ -1268,12 +1524,74 @@
             { id: 'ri4', name: 'Hazelnut Tres Leches Dessert', price: 540, assignees: ['u1', 'u2'] }
           ]
         },
+        masterPasskey: 'MASTER-2026',
+        autoDeductWalletOnSettle: true,
         users: [
-          { id: 'u1', name: 'Anushka Varshney', email: 'anushka@splitwise.dev', upi: 'anushka@okaxis', avatar: 'AV' },
-          { id: 'u2', name: 'Rohan Mehta', email: 'rohan.m@gmail.com', upi: 'rohanm@okhdfcbank', avatar: 'RM' },
-          { id: 'u3', name: 'Kabir Sharma', email: 'kabir.s@outlook.com', upi: 'kabir@okicici', avatar: 'KS' },
-          { id: 'u4', name: 'Priya Nair', email: 'priya.nair@yahoo.com', upi: 'priyanair@ybl', avatar: 'PN' },
-          { id: 'u5', name: 'Aarav Khanna', email: 'aarav.k@gmail.com', upi: 'aarav@paytm', avatar: 'AK' }
+          {
+            id: 'u1',
+            name: 'Anushka Varshney',
+            email: 'anushka@splitwise.dev',
+            upi: 'anushka@okaxis',
+            avatar: 'AV',
+            role: 'MASTER',
+            pin: '1234',
+            walletBalance: 85000,
+            walletHistory: [
+              { id: 'wh1', type: 'credit', amountInr: 85000, note: 'Initial Master Account Personal Funds', timestamp: 'Oct 01, 09:00 AM' }
+            ]
+          },
+          {
+            id: 'u2',
+            name: 'Rohan Mehta',
+            email: 'rohan.m@gmail.com',
+            upi: 'rohanm@okhdfcbank',
+            avatar: 'RM',
+            role: 'MEMBER',
+            pin: '1234',
+            walletBalance: 42000,
+            walletHistory: [
+              { id: 'wh2', type: 'credit', amountInr: 42000, note: 'Initial Personal Wallet Balance', timestamp: 'Oct 01, 10:00 AM' }
+            ]
+          },
+          {
+            id: 'u3',
+            name: 'Kabir Sharma',
+            email: 'kabir.s@outlook.com',
+            upi: 'kabir@okicici',
+            avatar: 'KS',
+            role: 'MEMBER',
+            pin: '1234',
+            walletBalance: 38500,
+            walletHistory: [
+              { id: 'wh3', type: 'credit', amountInr: 38500, note: 'Initial Personal Wallet Balance', timestamp: 'Oct 01, 10:15 AM' }
+            ]
+          },
+          {
+            id: 'u4',
+            name: 'Priya Nair',
+            email: 'priya.nair@yahoo.com',
+            upi: 'priyanair@ybl',
+            avatar: 'PN',
+            role: 'MEMBER',
+            pin: '1234',
+            walletBalance: 51200,
+            walletHistory: [
+              { id: 'wh4', type: 'credit', amountInr: 51200, note: 'Initial Personal Wallet Balance', timestamp: 'Oct 01, 10:30 AM' }
+            ]
+          },
+          {
+            id: 'u5',
+            name: 'Aarav Khanna',
+            email: 'aarav.k@gmail.com',
+            upi: 'aarav@paytm',
+            avatar: 'AK',
+            role: 'MEMBER',
+            pin: '1234',
+            walletBalance: 29000,
+            walletHistory: [
+              { id: 'wh5', type: 'credit', amountInr: 29000, note: 'Initial Personal Wallet Balance', timestamp: 'Oct 01, 11:00 AM' }
+            ]
+          }
         ],
         groups: [
           {
@@ -1541,6 +1859,52 @@
             ],
             comments: [],
             revisions: [{ rev: 1, actorId: 'u1', summary: 'Created cyclic leg 3 (Kabir owes Anushka ₹1,500)', timestamp: '2026-10-15 11:10' }]
+          },
+          {
+            id: 'exp10',
+            groupId: 'direct:u1:u2',
+            isDirect: true,
+            directParticipants: ['u1', 'u2'],
+            description: 'Blue Tokai Pour-Over & Almond Croissant (1-on-1)',
+            category: 'Food & Drink',
+            totalAmount: 760,
+            currency: 'INR',
+            date: '2026-10-16',
+            createdBy: 'u1',
+            splitType: 'EQUAL',
+            isPayment: false,
+            recurring: 'none',
+            notes: 'Direct individual bill with Rohan — no group required',
+            deleted: false,
+            shares: [
+              { userId: 'u1', paidShare: 760, owedShare: 380 },
+              { userId: 'u2', paidShare: 0, owedShare: 380 }
+            ],
+            comments: [],
+            revisions: [{ rev: 1, actorId: 'u1', summary: 'Created direct 1-on-1 expense with Rohan Mehta (₹760.00)', timestamp: '2026-10-16 09:40' }]
+          },
+          {
+            id: 'exp11',
+            groupId: 'direct:u1:u3',
+            isDirect: true,
+            directParticipants: ['u1', 'u3'],
+            description: 'Shared Uber Premier from CyberHub (1-on-1)',
+            category: 'Transport',
+            totalAmount: 640,
+            currency: 'INR',
+            date: '2026-10-16',
+            createdBy: 'u3',
+            splitType: 'EQUAL',
+            isPayment: false,
+            recurring: 'none',
+            notes: 'Direct 1-on-1 ride split with Kabir without a group',
+            deleted: false,
+            shares: [
+              { userId: 'u1', paidShare: 0, owedShare: 320 },
+              { userId: 'u3', paidShare: 640, owedShare: 320 }
+            ],
+            comments: [],
+            revisions: [{ rev: 1, actorId: 'u3', summary: 'Created direct 1-on-1 expense with Anushka Varshney (₹640.00)', timestamp: '2026-10-16 22:15' }]
           }
         ],
         auditFeed: [
@@ -1616,8 +1980,69 @@
       return state.users.find(u => u.id === uid) || { id: uid, name: 'Unknown User', upi: 'user@upi', avatar: '??' };
     }
 
+    function isMasterUser(uid) {
+      const u = getUserById(uid || state.currentUser);
+      return u && u.role === 'MASTER';
+    }
+
+    function makeCanonicalDirectGroupId(uidA, uidB) {
+      const pair = [uidA, uidB].sort();
+      return 'direct:' + pair[0] + ':' + pair[1];
+    }
+
     function getGroupById(gid) {
-      return state.groups.find(g => g.id === gid) || null;
+      if (!gid) return null;
+      const found = state.groups.find(g => g.id === gid);
+      if (found) return found;
+
+      if (gid === 'personal:self' || gid.startsWith('personal:')) {
+        const ownerId = gid.split(':')[1] && gid.split(':')[1] !== 'self' ? gid.split(':')[1] : state.currentUser;
+        const owner = getUserById(ownerId);
+        return {
+          id: 'personal:' + ownerId,
+          name: `Personal Expense (${owner.name})`,
+          category: 'Personal',
+          avatar: '👛',
+          members: [ownerId],
+          simplifyByDefault: false,
+          defaultSplitStrategy: 'EQUAL',
+          monthlyBudget: 25000,
+          isPersonal: true
+        };
+      }
+
+      if (gid.startsWith('direct:')) {
+        const parts = gid.split(':').slice(1);
+        let uA = state.currentUser;
+        let uB = parts[0];
+        if (parts.length >= 2) {
+          uA = parts[0];
+          uB = parts[1];
+        }
+        if (uA === uB) {
+          const fallbackFriend = state.users.find(u => u.id !== uA) || state.users[0];
+          uB = fallbackFriend.id;
+        }
+        const friendId = (uA === state.currentUser) ? uB : (uB === state.currentUser ? uA : uB);
+        const friend = getUserById(friendId);
+        const other = getUserById(uA === friendId ? uB : uA);
+        const label = (uA === state.currentUser || uB === state.currentUser)
+          ? `Direct 1-on-1: ${friend.name}`
+          : `Direct 1-on-1: ${other.name} & ${friend.name}`;
+        return {
+          id: makeCanonicalDirectGroupId(uA, uB),
+          name: label,
+          category: 'Direct 1-on-1',
+          avatar: '🤝',
+          members: [uA, uB],
+          simplifyByDefault: false,
+          defaultSplitStrategy: 'EQUAL',
+          monthlyBudget: 25000,
+          isDirect: true,
+          directFriendId: friendId
+        };
+      }
+      return null;
     }
 
     // =========================================================================
@@ -1805,6 +2230,40 @@
         });
       });
 
+      // Include Direct 1-on-1 (non-group) expenses
+      state.expenses.forEach(exp => {
+        if (exp.deleted) return;
+        const isDirect = Boolean(exp.isDirect || (exp.groupId && String(exp.groupId).startsWith('direct:')));
+        if (!isDirect) return;
+
+        const myShare = exp.shares.find(s => s.userId === me);
+        if (!myShare) return;
+
+        exp.shares.forEach(otherShare => {
+          if (otherShare.userId === me) return;
+          const fid = otherShare.userId;
+          if (!friendMap[fid]) return;
+
+          const myPaid = convertCurrency(myShare.paidShare, exp.currency, state.displayCurrency);
+          const myOwed = convertCurrency(myShare.owedShare, exp.currency, state.displayCurrency);
+          const otherPaid = convertCurrency(otherShare.paidShare, exp.currency, state.displayCurrency);
+          const otherOwed = convertCurrency(otherShare.owedShare, exp.currency, state.displayCurrency);
+
+          const myNet = myPaid - myOwed;
+          const otherNet = otherPaid - otherOwed;
+
+          if (myNet > 0.005 && otherNet < -0.005) {
+            const delta = Math.min(myNet, Math.abs(otherNet));
+            friendMap[fid].totalNet += delta;
+            friendMap[fid].byGroup['DIRECT'] = (friendMap[fid].byGroup['DIRECT'] || 0) + delta;
+          } else if (myNet < -0.005 && otherNet > 0.005) {
+            const delta = Math.min(Math.abs(myNet), otherNet);
+            friendMap[fid].totalNet -= delta;
+            friendMap[fid].byGroup['DIRECT'] = (friendMap[fid].byGroup['DIRECT'] || 0) - delta;
+          }
+        });
+      });
+
       return friendMap;
     }
 
@@ -1873,6 +2332,9 @@
       document.getElementById('badgeActivityCount').textContent = state.auditFeed.length;
       if (typeof updateOfflineIndicators === 'function') {
         updateOfflineIndicators();
+      }
+      if (typeof updateAuthAndRoleUI === 'function') {
+        updateAuthAndRoleUI(net);
       }
     }
 
@@ -2270,15 +2732,23 @@
             `;
           }
 
+          const directSettleGid = makeCanonicalDirectGroupId(me, friend.id);
+          const addDirectBtn = `<button onclick="openDirectFriendExpenseModal('${friend.id}')" class="px-3 py-1.5 rounded-xl bg-[#1CC29F]/15 hover:bg-[#1CC29F]/25 text-[#1CC29F] text-xs font-bold transition">+ Add 1-on-1 Bill</button>`;
+          actionButtons = addDirectBtn + (actionButtons ? ' ' + actionButtons.replace(/'g1'/g, `'${directSettleGid}'`) : '');
+
           const groupBreakdownLines = Object.entries(fb.byGroup)
             .filter(([, amt]) => Math.abs(amt) > 0.01)
             .map(([gid, amt]) => {
-              const g = getGroupById(gid);
-              const gName = g ? g.name : 'Direct Ledger';
+              const g = gid === 'DIRECT' ? null : getGroupById(gid);
+              const gName = gid === 'DIRECT' ? '🤝 Direct 1-on-1 Bills (No Group)' : (g ? g.name : 'Direct Ledger');
               const color = amt > 0 ? 'text-[#2ECC71]' : 'text-[#FF652F]';
               const verb = amt > 0 ? `${friend.name} owes you` : `You owe ${friend.name}`;
               return `<div class="flex items-center justify-between text-xs py-1"><span>${gName}: ${verb}</span><span class="font-bold tabular-nums ${color}">${formatMoney(Math.abs(amt))}</span></div>`;
             }).join('');
+
+          const friendRoleBadge = friend.role === 'MASTER'
+            ? '<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-500/15 text-amber-600 dark:text-amber-400">👑 Master</span>'
+            : '<span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-500">👤 Friend Account</span>';
 
           return `
             <div class="bg-white dark:bg-[#1E1E1E] rounded-2xl p-4 sm:p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm">
@@ -2286,7 +2756,10 @@
                 <div class="flex items-center gap-3.5">
                   <div class="w-11 h-11 rounded-2xl bg-[#1CC29F]/15 text-[#1CC29F] font-extrabold text-sm flex items-center justify-center">${friend.avatar}</div>
                   <div>
-                    <h3 class="font-bold text-base">${friend.name}</h3>
+                    <div class="flex items-center gap-2 flex-wrap">
+                      <h3 class="font-bold text-base">${friend.name}</h3>
+                      ${friendRoleBadge}
+                    </div>
                     <p class="text-xs text-slate-500">${friend.email} • VPA: <span class="font-mono">${friend.upi}</span></p>
                   </div>
                 </div>
@@ -2295,12 +2768,62 @@
                 </div>
               </div>
               ${groupBreakdownLines ? `<div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-800 space-y-0.5">${groupBreakdownLines}</div>` : ''}
-              ${actionButtons ? `<div class="mt-3 pt-2.5 flex flex-wrap items-center justify-end gap-2">${actionButtons}</div>` : ''}
+              <div class="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2">
+                <span class="text-[11px] text-slate-400">Split a bill directly with ${friend.name} without creating a group</span>
+                <div class="flex flex-wrap items-center gap-2">${actionButtons}</div>
+              </div>
             </div>
           `;
         }).join('');
 
       container.innerHTML = html;
+      renderDirectNonGroupExpensesFeed();
+    }
+
+    function renderDirectNonGroupExpensesFeed() {
+      const listEl = document.getElementById('directExpensesListContainer');
+      if (!listEl) return;
+      const me = state.currentUser;
+      const directExps = state.expenses.filter(e =>
+        !e.deleted && (
+          e.isDirect ||
+          (e.groupId && (String(e.groupId).startsWith('direct:') || String(e.groupId).startsWith('personal:')))
+        ) && e.shares.some(s => s.userId === me)
+      );
+
+      if (directExps.length === 0) {
+        listEl.innerHTML = `<div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900 text-xs text-slate-400 text-center">No direct 1-on-1 or personal non-group bills logged for your account yet. Click <strong>+ New Direct Bill</strong> to add one.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = directExps.map(exp => {
+        const g = getGroupById(exp.groupId);
+        const myShare = exp.shares.find(s => s.userId === me) || { paidShare: 0, owedShare: 0 };
+        const net = convertCurrency(myShare.paidShare - myShare.owedShare, exp.currency, state.displayCurrency);
+        let badgeHtml = `<span class="text-xs font-bold text-slate-400">Personal Spend (${formatExpenseNative(exp)})</span>`;
+        if (exp.isPayment) {
+          badgeHtml = `<span class="text-xs font-extrabold text-[#1CC29F]">Direct Settlement: ${formatExpenseNative(exp)}</span>`;
+        } else if (net > 0.01) {
+          badgeHtml = `<span class="text-xs font-extrabold text-[#2ECC71]">You lent ${formatMoney(net)}</span>`;
+        } else if (net < -0.01) {
+          badgeHtml = `<span class="text-xs font-extrabold text-[#FF652F]">You borrowed ${formatMoney(Math.abs(net))}</span>`;
+        }
+        return `
+          <div onclick="openExpenseDetailModal('${exp.id}')" class="cursor-pointer p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900 hover:border-[#1CC29F] border border-slate-200/80 dark:border-slate-800 flex flex-wrap items-center justify-between gap-2 transition">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 rounded-xl bg-[#FF652F]/10 text-[#FF652F] flex items-center justify-center text-base font-bold">🤝</div>
+              <div>
+                <div class="text-xs font-bold flex items-center gap-2">
+                  <span>${exp.description}</span>
+                  <span class="text-[10px] px-2 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300">${g ? g.name : 'Direct 1-on-1'}</span>
+                </div>
+                <div class="text-[11px] text-slate-400">${exp.date} • Total: ${formatExpenseNative(exp)} • ${exp.splitType}</div>
+              </div>
+            </div>
+            <div>${badgeHtml}</div>
+          </div>
+        `;
+      }).join('');
     }
 
     function sendPoliteReminder(friendId, amountDisp) {
@@ -2491,9 +3014,34 @@
       modal.classList.remove('hidden');
 
       const groupSelect = document.getElementById('expenseGroupSelect');
-      groupSelect.innerHTML = state.groups.map(g => `<option value="${g.id}">${g.avatar} ${g.name}</option>`).join('');
+      const me = state.currentUser;
+      const groupOpts = state.groups.map(g => `<option value="${g.id}">${g.avatar} ${g.name}</option>`).join('');
+      const directFriendOpts = state.users
+        .filter(u => u.id !== me)
+        .map(u => {
+          const cid = makeCanonicalDirectGroupId(me, u.id);
+          return `<option value="${cid}">🤝 Direct 1-on-1: ${u.name} (No Group)</option>`;
+        }).join('');
+      const personalOpt = `<option value="personal:${me}">👛 Personal Self-Expense (My Individual Funds Only)</option>`;
 
-      const targetGroupId = defaultGroupId || state.activeGroupId || state.groups[0].id;
+      groupSelect.innerHTML = `
+        <optgroup label="Shared Groups">${groupOpts}</optgroup>
+        <optgroup label="Direct 1-on-1 Individual Bills (No Group Required)">${directFriendOpts}</optgroup>
+        <optgroup label="Personal Individual Spend">${personalOpt}</optgroup>
+      `;
+
+      let targetGroupId = defaultGroupId || state.activeGroupId || state.groups[0].id;
+      if (targetGroupId.startsWith('direct:') && targetGroupId.split(':').length === 2) {
+        targetGroupId = makeCanonicalDirectGroupId(me, targetGroupId.split(':')[1]);
+      }
+      if (!Array.from(groupSelect.options).some(o => o.value === targetGroupId)) {
+        const dynG = getGroupById(targetGroupId);
+        if (dynG) {
+          groupSelect.insertAdjacentHTML('beforeend', `<option value="${dynG.id}">${dynG.avatar} ${dynG.name}</option>`);
+        } else {
+          targetGroupId = state.groups[0].id;
+        }
+      }
       groupSelect.value = targetGroupId;
 
       if (existingExpenseId) {
@@ -3031,7 +3579,36 @@
             { rev: 1, actorId: state.currentUser, summary: `Created expense for ${formatMoney(total, curr)} (${state.expenseModalState.splitStrategy})`, timestamp: new Date().toLocaleString() }
           ]
         };
+        if (g.isDirect) {
+          newExp.isDirect = true;
+          newExp.directParticipants = [...g.members];
+        }
+        if (g.isPersonal) {
+          newExp.isPersonal = true;
+        }
         state.expenses.unshift(newExp);
+
+        // If Personal Self-Expense or auto-deduct wallet is active, record paidShare impact on payer's personal funds
+        if (state.autoDeductWalletOnSettle !== false) {
+          sharesArr.forEach(sh => {
+            if (sh.paidShare > 0.01) {
+              const payerUser = getUserById(sh.paidShare ? sh.userId : state.currentUser);
+              const paidInr = Math.round(toInr(sh.paidShare, curr) * 100) / 100;
+              if (payerUser && typeof payerUser.walletBalance === 'number') {
+                payerUser.walletBalance = Math.round((payerUser.walletBalance - paidInr) * 100) / 100;
+                payerUser.walletHistory = payerUser.walletHistory || [];
+                payerUser.walletHistory.unshift({
+                  id: 'wh_' + Date.now() + '_' + sh.userId,
+                  type: 'debit',
+                  amountInr: paidInr,
+                  note: `Paid bill: "${desc}" (${g.name})`,
+                  timestamp: 'Just now'
+                });
+              }
+            }
+          });
+        }
+
         state.auditFeed.unshift({
           id: 'aud_' + Date.now(),
           type: 'add',
@@ -3040,7 +3617,7 @@
           amountInr: toInr(total, curr),
           timestamp: 'Just now'
         });
-        showToast(`Added "${desc}" (${formatMoney(total, curr)})`);
+        showToast(`Added "${desc}" (${formatMoney(total, curr)}) in ${g.name}`);
       }
 
       if (state.offlineMode) {
@@ -3248,9 +3825,19 @@
       const modal = document.getElementById('settleUpModal');
       modal.classList.remove('hidden');
 
+      const me = state.currentUser;
       const targetGid = groupId || state.activeGroupId || state.groups[0].id;
       const gSel = document.getElementById('settleGroupSelect');
-      gSel.innerHTML = state.groups.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
+      const grpOpts = state.groups.map(g => `<option value="${g.id}">${g.name}</option>`).join('');
+      const dirOpts = state.users.filter(u => u.id !== me).map(u => {
+        const cid = makeCanonicalDirectGroupId(me, u.id);
+        return `<option value="${cid}">🤝 Direct 1-on-1: ${u.name}</option>`;
+      }).join('');
+      gSel.innerHTML = `<optgroup label="Shared Groups">${grpOpts}</optgroup><optgroup label="Direct 1-on-1 Ledgers">${dirOpts}</optgroup>`;
+      if (!Array.from(gSel.options).some(o => o.value === targetGid)) {
+        const dg = getGroupById(targetGid);
+        if (dg) gSel.insertAdjacentHTML('beforeend', `<option value="${dg.id}">${dg.name}</option>`);
+      }
       gSel.value = targetGid;
 
       const payerSel = document.getElementById('settlePayerSelect');
@@ -3404,7 +3991,39 @@
         revisions: [{ rev: 1, actorId: state.currentUser, summary: `Recorded ${state.selectedPaymentRail} settlement of ${formatMoney(amt)}`, timestamp: new Date().toLocaleString() }]
       };
 
+      if (String(gid).startsWith('direct:')) {
+        paymentExp.isDirect = true;
+        paymentExp.directParticipants = [payerId, payeeId];
+      }
       state.expenses.unshift(paymentExp);
+
+      // Update individual wallet balances if autoDeductWalletOnSettle is enabled
+      if (state.autoDeductWalletOnSettle !== false) {
+        const amtInr = Math.round(toInr(amt, state.displayCurrency) * 100) / 100;
+        if (typeof payer.walletBalance === 'number') {
+          payer.walletBalance = Math.round((payer.walletBalance - amtInr) * 100) / 100;
+          payer.walletHistory = payer.walletHistory || [];
+          payer.walletHistory.unshift({
+            id: 'wh_' + Date.now() + '_out',
+            type: 'debit',
+            amountInr: amtInr,
+            note: `Settled debt to ${payee.name} (${state.selectedPaymentRail})`,
+            timestamp: 'Just now'
+          });
+        }
+        if (typeof payee.walletBalance === 'number') {
+          payee.walletBalance = Math.round((payee.walletBalance + amtInr) * 100) / 100;
+          payee.walletHistory = payee.walletHistory || [];
+          payee.walletHistory.unshift({
+            id: 'wh_' + Date.now() + '_in',
+            type: 'credit',
+            amountInr: amtInr,
+            note: `Received settlement from ${payer.name} (${state.selectedPaymentRail})`,
+            timestamp: 'Just now'
+          });
+        }
+      }
+
       state.auditFeed.unshift({
         id: 'aud_' + Date.now(),
         type: 'payment',
@@ -3655,7 +4274,19 @@
       const upi = document.getElementById('newFriendUpiInput').value.trim() || `${name.toLowerCase().replace(/\s+/g, '')}@okicici`;
       const initials = name.split(' ').map(p => p[0]).join('').toUpperCase().slice(0, 2);
 
-      const newU = { id: 'u_' + Date.now(), name, email, upi, avatar: initials };
+      const newU = {
+        id: 'u_' + Date.now(),
+        name,
+        email,
+        upi,
+        avatar: initials,
+        role: 'MEMBER',
+        pin: '1234',
+        walletBalance: 20000,
+        walletHistory: [
+          { id: 'wh_' + Date.now(), type: 'credit', amountInr: 20000, note: 'Starting Friend Wallet Balance', timestamp: 'Just now' }
+        ]
+      };
       state.users.push(newU);
       state.groups[0].members.push(newU.id);
       closeAddFriendModal();
@@ -3987,6 +4618,11 @@ Total Charged: ₹840.00`
     let stagedCsvImportRows = [];
 
     function openCsvImportModal() {
+      if (!isMasterUser()) {
+        showToast('🔒 CSV/JSON Import & Ledger Specs are restricted to the Master Account.');
+        openAuthModal('login');
+        return;
+      }
       document.getElementById('csvImporterModal').classList.remove('hidden');
       if (!document.getElementById('csvRawTextarea').value.trim()) {
         loadSampleSplitwiseCsv();
@@ -4199,6 +4835,11 @@ Total Charged: ₹840.00`
     }
 
     function openOfflineSyncModal() {
+      if (!isMasterUser()) {
+        showToast('🔒 Offline Conflict Lab & Engine Specs are restricted to the Master Account.');
+        openAuthModal('login');
+        return;
+      }
       ensureOfflineStateFields();
       document.getElementById('offlineSyncModal').classList.remove('hidden');
       renderOfflineSyncModalContent();
@@ -4377,6 +5018,366 @@ Total Charged: ₹840.00`
             </div>
           `).join('')
         : '<div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 text-xs text-slate-400">Zero active version-vector conflicts. Click <strong>Simulate Concurrent Conflict</strong> above to test LWW vs. CRDT vector resolution.</div>';
+    }
+
+    // =========================================================================
+    // 17. ACCOUNT MANAGEMENT, AUTH, PERSONAL WALLET & MASTER-ONLY RBAC GATING
+    // =========================================================================
+    function ensureUserAuthAndWalletFields() {
+      if (!state.masterPasskey) state.masterPasskey = 'MASTER-2026';
+      if (typeof state.autoDeductWalletOnSettle !== 'boolean') state.autoDeductWalletOnSettle = true;
+      const defaultBalances = { u1: 85000, u2: 42000, u3: 38500, u4: 51200, u5: 29000 };
+      state.users.forEach((u, idx) => {
+        if (!u.role) u.role = (u.id === 'u1' || idx === 0) ? 'MASTER' : 'MEMBER';
+        if (!u.pin) u.pin = '1234';
+        if (typeof u.walletBalance !== 'number' || isNaN(u.walletBalance)) {
+          u.walletBalance = defaultBalances[u.id] || 25000;
+        }
+        if (!Array.isArray(u.walletHistory)) {
+          u.walletHistory = [
+            { id: 'wh_init_' + u.id, type: 'credit', amountInr: u.walletBalance, note: 'Initial Personal Funds Balance', timestamp: 'Oct 01' }
+          ];
+        }
+      });
+    }
+
+    function updateAuthAndRoleUI(currentNetInDisplayCurr) {
+      ensureUserAuthAndWalletFields();
+      const me = getUserById(state.currentUser);
+      const isMaster = me.role === 'MASTER';
+      const walletDisp = fromInr(me.walletBalance || 0, state.displayCurrency);
+      const netVal = typeof currentNetInDisplayCurr === 'number' ? currentNetInDisplayCurr : 0;
+      const effectiveLiquidity = walletDisp + netVal;
+
+      // 1. Update Header User Pill
+      const avatarEl = document.getElementById('headerUserAvatar');
+      if (avatarEl) avatarEl.textContent = me.avatar || 'U';
+      const nameEl = document.getElementById('headerUserName');
+      if (nameEl) nameEl.textContent = me.name.split(' ')[0];
+      const roleBadgeEl = document.getElementById('headerUserRoleBadge');
+      if (roleBadgeEl) {
+        roleBadgeEl.textContent = isMaster ? '👑 MASTER' : '👤 MEMBER';
+        roleBadgeEl.className = isMaster
+          ? 'text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-amber-500/20 text-amber-600 dark:text-amber-400'
+          : 'text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded bg-[#1CC29F]/15 text-[#1CC29F]';
+      }
+      const hdrWalletEl = document.getElementById('headerUserWalletText');
+      if (hdrWalletEl) hdrWalletEl.textContent = `Funds: ${formatMoney(walletDisp)}`;
+
+      // 2. Update Sidebar Personal Wallet Card
+      const sideRoleEl = document.getElementById('sidebarRolePill');
+      if (sideRoleEl) {
+        sideRoleEl.textContent = isMaster ? '👑 MASTER' : '👤 FRIEND ACCOUNT';
+        sideRoleEl.className = isMaster
+          ? 'text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-600 dark:text-amber-400'
+          : 'text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-[#1CC29F]/15 text-[#1CC29F]';
+      }
+      const sideBalEl = document.getElementById('sidebarWalletBalance');
+      if (sideBalEl) sideBalEl.textContent = formatMoney(walletDisp);
+      const sideProjEl = document.getElementById('sidebarProjectedLiquidity');
+      if (sideProjEl) {
+        sideProjEl.textContent = `After Splitwise net: ${effectiveLiquidity >= 0 ? '' : '−'}${formatMoney(Math.abs(effectiveLiquidity))}`;
+      }
+
+      // 3. Enforce Master-Account-Only Visibility for Complicated Specs & CSV/JSON Tools
+      const csvTopBtn = document.getElementById('btnOpenCsvImporterTop');
+      if (csvTopBtn) csvTopBtn.classList.toggle('hidden', !isMaster);
+
+      const syncTopBtn = document.getElementById('btnOfflineSyncTop');
+      if (syncTopBtn) syncTopBtn.classList.toggle('hidden', !isMaster);
+
+      const dagDemoBtn = document.getElementById('btnSidebarSimplifyDemo');
+      if (dagDemoBtn) dagDemoBtn.classList.toggle('hidden', !isMaster);
+
+      const specsCard = document.getElementById('sidebarLedgerSpecsCard');
+      if (specsCard) {
+        specsCard.className = isMaster
+          ? 'hidden lg:block bg-white dark:bg-[#1E1E1E] rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5'
+          : 'hidden bg-white dark:bg-[#1E1E1E] rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2.5';
+      }
+
+      const masterExportCard = document.getElementById('accountMasterExportCard');
+      if (masterExportCard) masterExportCard.classList.toggle('hidden', !isMaster);
+
+      const memberBanner = document.getElementById('memberModeSimplifiedBanner');
+      if (memberBanner) memberBanner.classList.toggle('hidden', isMaster);
+
+      // 4. Update Account Tab Wallet & Role elements
+      const accRoleBadge = document.getElementById('accountRoleBadge');
+      if (accRoleBadge) {
+        accRoleBadge.textContent = isMaster ? '👑 Master Owner Account' : '👤 Friend / Member Account';
+        accRoleBadge.className = isMaster
+          ? 'text-xs font-extrabold uppercase px-2.5 py-1 rounded-xl bg-amber-500/15 text-amber-600 dark:text-amber-400'
+          : 'text-xs font-extrabold uppercase px-2.5 py-1 rounded-xl bg-[#1CC29F]/15 text-[#1CC29F]';
+      }
+      const accWalletStat = document.getElementById('accountWalletBalanceStat');
+      if (accWalletStat) accWalletStat.textContent = formatMoney(walletDisp);
+      const accNetStat = document.getElementById('accountNetLedgerStat');
+      if (accNetStat) {
+        accNetStat.textContent = (netVal >= 0 ? '+' : '−') + formatMoney(Math.abs(netVal));
+        accNetStat.className = `text-2xl font-extrabold tabular-nums mt-1 ${netVal >= 0 ? 'text-[#2ECC71]' : 'text-[#FF652F]'}`;
+      }
+      const accEffStat = document.getElementById('accountEffectiveLiquidityStat');
+      if (accEffStat) {
+        accEffStat.textContent = (effectiveLiquidity >= 0 ? '' : '−') + formatMoney(Math.abs(effectiveLiquidity));
+      }
+      const wCurrLbl = document.getElementById('walletCurrencyLabel');
+      if (wCurrLbl) wCurrLbl.textContent = state.displayCurrency;
+      const autoToggle = document.getElementById('toggleAutoDeductWallet');
+      if (autoToggle) autoToggle.checked = state.autoDeductWalletOnSettle !== false;
+
+      renderWalletHistoryList(me);
+    }
+
+    function renderWalletHistoryList(userObj) {
+      const container = document.getElementById('walletHistoryList');
+      if (!container || !userObj) return;
+      const hist = userObj.walletHistory || [];
+      if (hist.length === 0) {
+        container.innerHTML = `<div class="text-slate-400 py-1">No personal wallet transactions logged yet.</div>`;
+        return;
+      }
+      container.innerHTML = hist.slice(0, 12).map(item => {
+        const isCredit = item.type === 'credit';
+        const disp = formatMoney(fromInr(item.amountInr || 0, state.displayCurrency));
+        return `
+          <div class="flex items-center justify-between py-1.5 px-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800">
+            <div>
+              <span class="font-semibold">${item.note}</span>
+              <span class="text-[10px] text-slate-400 ml-2">${item.timestamp}</span>
+            </div>
+            <span class="font-extrabold tabular-nums ${isCredit ? 'text-[#2ECC71]' : 'text-[#FF652F]'}">${isCredit ? '+' : '−'}${disp}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleAutoDeductWalletSetting(checked) {
+      state.autoDeductWalletOnSettle = Boolean(checked);
+      persistState();
+      showToast(`Auto-adjust personal wallet on settlements & bills: ${checked ? 'ON' : 'OFF'}`);
+    }
+
+    function adjustPersonalWallet(direction) {
+      ensureUserAuthAndWalletFields();
+      const me = getUserById(state.currentUser);
+      const amtInput = document.getElementById('walletAdjustAmountInput');
+      const noteInput = document.getElementById('walletAdjustNoteInput');
+      const rawAmt = Number(amtInput?.value) || 0;
+      if (rawAmt <= 0) {
+        showToast('Please enter a positive amount to adjust your personal funds.');
+        return;
+      }
+      const amtInr = Math.round(toInr(rawAmt, state.displayCurrency) * 100) / 100;
+      const defaultNote = direction === 'credit' ? 'Added Personal Funds (Top-Up)' : 'Personal Fund Withdrawal / Spend';
+      const note = (noteInput?.value || '').trim() || defaultNote;
+
+      if (direction === 'credit') {
+        me.walletBalance = Math.round(((me.walletBalance || 0) + amtInr) * 100) / 100;
+      } else {
+        me.walletBalance = Math.round(((me.walletBalance || 0) - amtInr) * 100) / 100;
+      }
+
+      me.walletHistory = me.walletHistory || [];
+      me.walletHistory.unshift({
+        id: 'wh_' + Date.now(),
+        type: direction === 'credit' ? 'credit' : 'debit',
+        amountInr: amtInr,
+        note,
+        timestamp: 'Just now'
+      });
+
+      if (noteInput) noteInput.value = '';
+      renderApp();
+      showToast(`${direction === 'credit' ? 'Added' : 'Deducted'} ${formatMoney(rawAmt)} ${direction === 'credit' ? 'to' : 'from'} ${me.name}'s Personal Wallet.`);
+    }
+
+    function openQuickWalletAdjust(direction) {
+      switchPrimaryTab('account');
+      const noteInput = document.getElementById('walletAdjustNoteInput');
+      if (noteInput) {
+        noteInput.placeholder = direction === 'credit' ? 'e.g. Salary / UPI Top-Up' : 'e.g. Personal Coffee / ATM Withdrawal';
+        noteInput.focus();
+      }
+      const card = document.getElementById('accountWalletManagerCard');
+      if (card && card.scrollIntoView) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function openDirectFriendExpenseModal(friendId) {
+      const me = state.currentUser;
+      const fallbackFriend = state.users.find(u => u.id !== me) || state.users[0];
+      const targetFriendId = friendId || fallbackFriend.id;
+      const directGid = makeCanonicalDirectGroupId(me, targetFriendId);
+      openAddExpenseModal(directGid);
+      const friend = getUserById(targetFriendId);
+      document.getElementById('expenseModalTitle').textContent = `Add 1-on-1 Bill with ${friend.name}`;
+    }
+
+    function openAuthModal(defaultTab) {
+      ensureUserAuthAndWalletFields();
+      document.getElementById('authAccountModal').classList.remove('hidden');
+      switchAuthModalTab(defaultTab || 'login');
+      renderAuthAccountsSwitchList();
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authAccountModal').classList.add('hidden');
+      const err1 = document.getElementById('loginErrorMsg');
+      if (err1) err1.textContent = '';
+      const err2 = document.getElementById('signupErrorMsg');
+      if (err2) err2.textContent = '';
+    }
+
+    function switchAuthModalTab(tab) {
+      const isLogin = tab !== 'signup';
+      document.getElementById('authViewLogin').classList.toggle('hidden', !isLogin);
+      document.getElementById('authViewSignup').classList.toggle('hidden', isLogin);
+
+      document.getElementById('authTabBtnLogin').className = isLogin
+        ? 'px-4 py-2 rounded-t-xl text-xs font-bold bg-white dark:bg-[#1E1E1E] text-[#1CC29F] border-t border-x border-slate-200 dark:border-slate-800'
+        : 'px-4 py-2 rounded-t-xl text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200';
+      document.getElementById('authTabBtnSignup').className = !isLogin
+        ? 'px-4 py-2 rounded-t-xl text-xs font-bold bg-white dark:bg-[#1E1E1E] text-[#1CC29F] border-t border-x border-slate-200 dark:border-slate-800'
+        : 'px-4 py-2 rounded-t-xl text-xs font-bold text-slate-500 hover:text-slate-800 dark:hover:text-slate-200';
+    }
+
+    function renderAuthAccountsSwitchList() {
+      const container = document.getElementById('authAccountsSwitchList');
+      if (!container) return;
+      container.innerHTML = state.users.map(u => {
+        const isCurrent = u.id === state.currentUser;
+        const isMaster = u.role === 'MASTER';
+        const balDisp = formatMoney(fromInr(u.walletBalance || 0, state.displayCurrency));
+        return `
+          <div onclick="switchActiveUserAccount('${u.id}')" class="cursor-pointer p-3 rounded-xl border transition flex items-center justify-between gap-2 ${isCurrent ? 'border-[#1CC29F] bg-[#1CC29F]/10' : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 hover:border-[#1CC29F]'}">
+            <div class="flex items-center gap-2.5 min-w-0">
+              <div class="w-9 h-9 rounded-xl ${isMaster ? 'bg-amber-500 text-white' : 'bg-[#1CC29F]/20 text-[#1CC29F]'} font-extrabold text-xs flex items-center justify-center shrink-0">${u.avatar}</div>
+              <div class="min-w-0">
+                <div class="flex items-center gap-1.5">
+                  <span class="text-xs font-bold truncate">${u.name}</span>
+                  <span class="text-[9px] font-extrabold uppercase px-1.5 py-0.2 rounded ${isMaster ? 'bg-amber-500/20 text-amber-600 dark:text-amber-400' : 'bg-slate-200 dark:bg-slate-800 text-slate-500'}">${isMaster ? '👑 MASTER' : '👤 MEMBER'}</span>
+                </div>
+                <div class="text-[11px] text-slate-400 truncate">${u.email}</div>
+                <div class="text-[11px] font-bold text-[#1CC29F] tabular-nums">Funds: ${balDisp}</div>
+              </div>
+            </div>
+            <span class="text-[11px] font-bold ${isCurrent ? 'text-[#1CC29F]' : 'text-slate-400'}">${isCurrent ? '● Active' : 'Login →'}</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function switchActiveUserAccount(targetUid) {
+      const user = state.users.find(u => u.id === targetUid);
+      if (!user) return;
+      state.currentUser = user.id;
+      state.expenseModalState.payerMode = user.id;
+      closeAuthModal();
+      renderApp();
+      const roleMsg = user.role === 'MASTER'
+        ? '👑 Master Account active (CSV Import & Ledger Specs unlocked)'
+        : '👤 Friend Account active (Clean UI — Admin specs hidden)';
+      showToast(`Logged in as ${user.name} • ${roleMsg}`);
+    }
+
+    function handleCredentialLogin() {
+      const email = (document.getElementById('loginEmailInput').value || '').trim().toLowerCase();
+      const pin = (document.getElementById('loginPinInput').value || '').trim();
+      const errEl = document.getElementById('loginErrorMsg');
+
+      const found = state.users.find(u => u.email.toLowerCase() === email || u.name.toLowerCase() === email);
+      if (!found) {
+        errEl.textContent = 'No account found with that email or name. Try creating a new account!';
+        return;
+      }
+      if (found.pin && pin !== found.pin) {
+        errEl.textContent = 'Incorrect PIN/password for this account (Demo default is 1234).';
+        return;
+      }
+      errEl.textContent = '';
+      switchActiveUserAccount(found.id);
+    }
+
+    function handleSignupRoleChange(roleVal) {
+      const box = document.getElementById('signupMasterKeyContainer');
+      if (box) {
+        box.classList.toggle('hidden', roleVal !== 'MASTER');
+      }
+    }
+
+    function createNewUserAccount() {
+      ensureUserAuthAndWalletFields();
+      const name = (document.getElementById('signupNameInput').value || '').trim();
+      const email = (document.getElementById('signupEmailInput').value || '').trim();
+      const upi = (document.getElementById('signupUpiInput').value || '').trim();
+      const pin = (document.getElementById('signupPinInput').value || '').trim() || '1234';
+      const initialFunds = Number(document.getElementById('signupInitialFundsInput').value) || 0;
+      const role = document.getElementById('signupRoleSelect').value || 'MEMBER';
+      const masterKeyEntered = (document.getElementById('signupMasterKeyInput').value || '').trim();
+      const errEl = document.getElementById('signupErrorMsg');
+
+      if (!name || !email) {
+        errEl.textContent = 'Please enter both your full name and email address.';
+        return;
+      }
+      if (state.users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+        errEl.textContent = 'An account with this email already exists. Please log in instead.';
+        return;
+      }
+      if (role === 'MASTER' && masterKeyEntered !== (state.masterPasskey || 'MASTER-2026')) {
+        errEl.textContent = '🔒 Access Denied: Only the owner with the valid Master Passkey (MASTER-2026) can create a Master Account.';
+        return;
+      }
+
+      const initials = name.split(' ').map(p => p[0]).join('').toUpperCase().slice(0, 2) || 'FR';
+      const cleanUpi = upi || `${name.toLowerCase().replace(/[^a-z0-9]/g, '')}@okaxis`;
+      const newUid = 'u_' + Date.now();
+
+      const newUser = {
+        id: newUid,
+        name,
+        email,
+        upi: cleanUpi,
+        avatar: initials,
+        role,
+        pin,
+        walletBalance: Math.max(0, initialFunds),
+        walletHistory: [
+          {
+            id: 'wh_' + Date.now(),
+            type: 'credit',
+            amountInr: Math.max(0, initialFunds),
+            note: `Account Created (${role === 'MASTER' ? 'Master Account' : 'Friend Account'})`,
+            timestamp: 'Just now'
+          }
+        ]
+      };
+
+      state.users.push(newUser);
+      // Add new friend to default shared group 1 so they can also participate in group splits if desired
+      if (state.groups[0] && !state.groups[0].members.includes(newUid)) {
+        state.groups[0].members.push(newUid);
+      }
+
+      state.auditFeed.unshift({
+        id: 'aud_' + Date.now(),
+        type: 'add',
+        expenseId: null,
+        text: `New ${role === 'MASTER' ? 'Master' : 'Friend'} Account registered: ${name} (${email})`,
+        amountInr: initialFunds,
+        timestamp: 'Just now'
+      });
+
+      // Reset form fields
+      document.getElementById('signupNameInput').value = '';
+      document.getElementById('signupEmailInput').value = '';
+      document.getElementById('signupUpiInput').value = '';
+      document.getElementById('signupMasterKeyInput').value = '';
+      errEl.textContent = '';
+
+      switchActiveUserAccount(newUid);
     }
 
     window.addEventListener('DOMContentLoaded', () => {
