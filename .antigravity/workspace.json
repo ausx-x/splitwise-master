@@ -1,0 +1,22 @@
+{
+  "project": "splitwise-clone-master",
+  "editor": "Google Antigravity IDE",
+  "entryPoints": {
+    "interactivePreview": "preview/splitwise_app.html",
+    "reactClient": "src/client/App.tsx",
+    "debtSolverEngine": "src/engine/debtSimplifier.ts",
+    "splitEngine": "src/engine/splitCalculator.ts",
+    "digitalBillParser": "src/engine/digitalBillParser.ts",
+    "csvImporter": "src/engine/csvImporter.ts",
+    "offlineSyncEngine": "src/engine/offlineSyncEngine.ts",
+    "databaseSchema": "database/schema.sql",
+    "specification": "docs/SPECIFICATION_AND_UI_UX_TEARDOWN.md"
+  },
+  "designTokens": {
+    "brandPrimary": "#1CC29F",
+    "creditorPositive": "#2ECC71",
+    "debtorNegative": "#FF652F",
+    "surfaceLight": "#F6F6F6",
+    "surfaceDark": "#121212"
+  }
+}
